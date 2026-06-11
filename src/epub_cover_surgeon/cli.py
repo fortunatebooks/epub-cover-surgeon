@@ -54,28 +54,40 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--json", action="store_true", help="Print machine-readable JSON output.")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    inspect_parser = subparsers.add_parser("inspect", help="Inspect EPUB metadata and cover status.")
+    inspect_parser = subparsers.add_parser(
+        "inspect", help="Inspect EPUB metadata and cover status."
+    )
     inspect_parser.add_argument("epub")
 
     extract_parser = subparsers.add_parser("extract", help="Extract the declared cover image.")
     extract_parser.add_argument("epub")
-    extract_parser.add_argument("--out", required=True, help="Output file or directory for the cover image.")
+    extract_parser.add_argument(
+        "--out", required=True, help="Output file or directory for the cover image."
+    )
 
     replace_parser = subparsers.add_parser("replace", help="Insert or replace an EPUB cover image.")
     replace_parser.add_argument("epub")
     replace_parser.add_argument("cover")
     replace_parser.add_argument("--out", required=True, help="Output EPUB path.")
-    replace_parser.add_argument("--cover-title", default="Cover", help="EPUB 2 guide title for the cover reference.")
+    replace_parser.add_argument(
+        "--cover-title", default="Cover", help="EPUB 2 guide title for the cover reference."
+    )
 
     validate_parser = subparsers.add_parser("validate", help="Validate basic EPUB structure.")
     validate_parser.add_argument("epub")
-    validate_parser.add_argument("--require-cover", action="store_true", help="Fail validation if no cover is declared.")
+    validate_parser.add_argument(
+        "--require-cover", action="store_true", help="Fail validation if no cover is declared."
+    )
 
-    harden_parser = subparsers.add_parser("harden", help="Write a validated, optionally cover-updated EPUB copy.")
+    harden_parser = subparsers.add_parser(
+        "harden", help="Write a validated, optionally cover-updated EPUB copy."
+    )
     harden_parser.add_argument("epub")
     harden_parser.add_argument("--cover", help="Optional new cover image.")
     harden_parser.add_argument("--out", required=True, help="Output EPUB path.")
-    harden_parser.add_argument("--require-cover", action="store_true", help="Require a cover after hardening.")
+    harden_parser.add_argument(
+        "--require-cover", action="store_true", help="Require a cover after hardening."
+    )
 
     return parser
 

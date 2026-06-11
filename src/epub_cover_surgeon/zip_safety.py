@@ -52,8 +52,7 @@ def check_zip_safety(
     infos = epub_zip.infolist()
     if len(infos) > max_entry_count:
         raise ZipSafetyError(
-            f"{filename} contains too many archive entries: {len(infos)} "
-            f"(limit: {max_entry_count})"
+            f"{filename} contains too many archive entries: {len(infos)} (limit: {max_entry_count})"
         )
 
     max_unpacked_bytes = max_unpacked_mb * 1024 * 1024

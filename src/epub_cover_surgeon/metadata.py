@@ -153,7 +153,8 @@ def find_cover_item(package: PackageDocument) -> tuple[ET.Element | None, str | 
                 candidate
                 for candidate in items
                 if (candidate.get("media-type") or "").startswith("image/")
-                and "cover" in ((candidate.get("id") or "") + " " + (candidate.get("href") or "")).lower()
+                and "cover"
+                in ((candidate.get("id") or "") + " " + (candidate.get("href") or "")).lower()
             ),
             None,
         )

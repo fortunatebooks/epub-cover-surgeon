@@ -35,7 +35,9 @@ def guess_image_media_type(path: str | Path) -> str:
     """Guess image media type from extension, falling back to mimetypes."""
 
     suffix = Path(path).suffix.lower()
-    return _IMAGE_TYPES.get(suffix) or mimetypes.guess_type(str(path))[0] or "application/octet-stream"
+    return (
+        _IMAGE_TYPES.get(suffix) or mimetypes.guess_type(str(path))[0] or "application/octet-stream"
+    )
 
 
 def _cover_extension(media_type: str, fallback_path: str | Path | None = None) -> str:
@@ -118,7 +120,11 @@ def _copy_archive_with_replacements(
             names_written.add("mimetype")
 
         for item in zin.infolist():
-            if item.filename in names_written or item.filename in skipped or item.filename in replacements:
+            if (
+                item.filename in names_written
+                or item.filename in skipped
+                or item.filename in replacements
+            ):
                 continue
             data = zin.read(item.filename)
             zout.writestr(item, data)
@@ -185,7 +191,9 @@ def replace_cover(
                 if Path(cover_href).suffix.lower() not in _IMAGE_TYPES:
                     cover_href, _unused = _next_cover_path(package.path, media_type)
                 cover_archive_path = normalize_zip_path(
-                    posixpath.join(str(Path(package.path).parent).replace(".", "", 1).strip("/"), cover_href)
+                    posixpath.join(
+                        str(Path(package.path).parent).replace(".", "", 1).strip("/"), cover_href
+                    )
                     if str(Path(package.path).parent).replace(".", "", 1).strip("/")
                     else cover_href
                 )
@@ -203,8 +211,14 @@ def replace_cover(
             guide = package.root.find(f"{{{OPF_NS}}}guide")
             if guide is None:
                 guide = package.root.find("guide")
-            if guide is not None and not any((ref.get("type") or "").lower() == "cover" for ref in list(guide)):
-                ET.SubElement(guide, f"{{{OPF_NS}}}reference", {"type": "cover", "title": cover_title, "href": cover_item.get("href", "")})
+            if guide is not None and not any(
+                (ref.get("type") or "").lower() == "cover" for ref in list(guide)
+            ):
+                ET.SubElement(
+                    guide,
+                    f"{{{OPF_NS}}}reference",
+                    {"type": "cover", "title": cover_title, "href": cover_item.get("href", "")},
+                )
 
             opf_bytes = ET.tostring(package.root, encoding="utf-8", xml_declaration=True)
             replacements = {
@@ -221,7 +235,9 @@ def replace_cover(
 
     validation = validate_epub(output, require_cover=True)
     if not validation.ok:
-        raise ValueError("EPUB cover replacement produced invalid output: " + "; ".join(validation.errors))
+        raise ValueError(
+            "EPUB cover replacement produced invalid output: " + "; ".join(validation.errors)
+        )
 
     cover_info = CoverInfo(
         item_id=cover_id,

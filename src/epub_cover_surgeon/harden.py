@@ -26,7 +26,9 @@ def harden_epub(
     conservative; it does not rewrite book content.
     """
 
-    source_validation = validate_epub(epub_path, require_cover=require_cover and cover_image_path is None)
+    source_validation = validate_epub(
+        epub_path, require_cover=require_cover and cover_image_path is None
+    )
     if not source_validation.ok:
         raise ValueError("Source EPUB failed validation: " + "; ".join(source_validation.errors))
 

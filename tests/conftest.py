@@ -23,8 +23,12 @@ JPEG_TINY = bytes.fromhex(
 
 def write_epub(path: Path, *, with_cover: bool = True, drm: bool = False) -> Path:
     cover_meta = '<meta name="cover" content="cover-image" />' if with_cover else ""
-    cover_item = '<item id="cover-image" href="Images/cover.png" media-type="image/png" properties="cover-image" />' if with_cover else ""
-    opf = f'''<?xml version="1.0" encoding="utf-8"?>
+    cover_item = (
+        '<item id="cover-image" href="Images/cover.png" media-type="image/png" properties="cover-image" />'
+        if with_cover
+        else ""
+    )
+    opf = f"""<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="bookid">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
     <dc:identifier id="bookid">urn:uuid:test-book</dc:identifier>
@@ -40,19 +44,22 @@ def write_epub(path: Path, *, with_cover: bool = True, drm: bool = False) -> Pat
   <spine>
     <itemref idref="chapter" />
   </spine>
-</package>'''
+</package>"""
     path.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(path, "w") as zf:
         zf.writestr("mimetype", "application/epub+zip", compress_type=zipfile.ZIP_STORED)
         zf.writestr(
             "META-INF/container.xml",
-            '''<?xml version="1.0"?>
+            """<?xml version="1.0"?>
 <container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
   <rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml" /></rootfiles>
-</container>''',
+</container>""",
         )
         zf.writestr("OEBPS/content.opf", opf)
-        zf.writestr("OEBPS/Text/chapter.xhtml", "<html xmlns='http://www.w3.org/1999/xhtml'><body><p>Hello.</p></body></html>")
+        zf.writestr(
+            "OEBPS/Text/chapter.xhtml",
+            "<html xmlns='http://www.w3.org/1999/xhtml'><body><p>Hello.</p></body></html>",
+        )
         if with_cover:
             zf.writestr("OEBPS/Images/cover.png", PNG_1X1)
         if drm:
