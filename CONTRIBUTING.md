@@ -8,11 +8,13 @@ Thanks for helping improve EPUB Cover Surgeon.
 python -m pip install -e '.[dev]'
 pytest
 ruff check .
+ruff format --check .
 ```
 
 ## Pull request checklist
 
 - Add or update tests for behavior changes.
+- Run `pytest`, `ruff check .`, and `ruff format --check .`.
 - Keep cover operations conservative: do not rewrite unrelated book content.
 - Do not add network calls or telemetry.
 - Do not include copyrighted EPUB fixtures unless they are clearly licensed for redistribution.

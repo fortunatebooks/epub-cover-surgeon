@@ -6,6 +6,7 @@
 
 - [ ] `pytest`
 - [ ] `ruff check .`
+- [ ] `ruff format --check .`
 
 ## Fixture/data safety
 
