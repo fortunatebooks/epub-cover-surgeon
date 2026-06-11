@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import zipfile
+
 from conftest import write_epub
 
 from epub_cover_surgeon import inspect_epub, is_drm_protected, validate_epub
@@ -30,3 +32,14 @@ def test_drm_indicator_detection(tmp_path):
 
     assert is_drm_protected(epub) is True
     assert "Common DRM indicator file is present" in validate_epub(epub).warnings
+
+
+def test_validate_rejects_zip_path_traversal_member(tmp_path):
+    epub = write_epub(tmp_path / "unsafe.epub")
+    with zipfile.ZipFile(epub, "a") as zf:
+        zf.writestr("../outside.txt", "unsafe")
+
+    result = validate_epub(epub)
+
+    assert result.ok is False
+    assert any("Unsafe ZIP member path" in error for error in result.errors)
