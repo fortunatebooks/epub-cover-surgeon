@@ -39,6 +39,9 @@ python -m pip install -e '.[dev]'
 pytest
 ```
 
+Use `python3` instead of `python` if your platform does not provide a `python`
+command.
+
 ## Quick start
 
 ```bash
@@ -194,8 +197,17 @@ epub-cover-surgeon/
 python -m pip install -e '.[dev]'
 pytest
 ruff check .
+ruff format --check .
 python -m build
 ```
+
+Before publishing or tagging a release:
+
+1. Run the test suite, linter, and formatter check.
+2. Build the package from a clean checkout.
+3. Confirm generated archives do not include private EPUBs, copyrighted fixtures,
+   local output files, credentials, or environment files.
+4. Update [CHANGELOG.md](CHANGELOG.md) with user-visible changes.
 
 ## Roadmap
 

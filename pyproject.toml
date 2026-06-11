@@ -39,7 +39,10 @@ epub-cover = "epub_cover_surgeon.cli:main"
 epub-cover-surgeon = "epub_cover_surgeon.cli:main"
 
 [project.urls]
+Changelog = "https://github.com/fortunatebooks/epub-cover-surgeon/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/fortunatebooks/epub-cover-surgeon#readme"
 Homepage = "https://github.com/fortunatebooks/epub-cover-surgeon"
+Security = "https://github.com/fortunatebooks/epub-cover-surgeon/security/policy"
 Source = "https://github.com/fortunatebooks/epub-cover-surgeon"
 Issues = "https://github.com/fortunatebooks/epub-cover-surgeon/issues"
 
